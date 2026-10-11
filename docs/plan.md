@@ -44,7 +44,7 @@ Target users: students preparing for college (undergraduate students, transfer s
     - Simple diagram that shows the expected amount the student has to pay
 
 ## System Architecture 
-![alt text](assets/image-1.png)
+![alt text](../assets/image-1.png)
 
 
 ### UML Class Diagram
