@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
+import AppHeader from "@/components/app-header";
 
 const states = "Alabama,Alaska,Arizona,Arkansas,California,Colorado,Connecticut,Delaware,District of Columbia,Florida,Georgia,Hawaii,Idaho,Illinois,Indiana,Iowa,Kansas,Kentucky,Louisiana,Maine,Maryland,Massachusetts,Michigan,Minnesota,Mississippi,Missouri,Montana,Nebraska,Nevada,New Hampshire,New Jersey,New Mexico,New York,North Carolina,North Dakota,Ohio,Oklahoma,Oregon,Pennsylvania,Rhode Island,South Carolina,South Dakota,Tennessee,Texas,Utah,Vermont,Virginia,Washington,West Virginia,Wisconsin,Wyoming".split(",");
 function Select({ label, name, options, initial = "" }: { label: string; name: string; options: string[]; initial?: string }) {
@@ -87,7 +88,7 @@ export default function ProfileScreen({ profileOnly = false }: { profileOnly?: b
     } catch (error) { setAccountMessage(error instanceof Error ? error.message : "Unable to sign out."); setBusy(false); }
   }
   return <>
-    {!profileOnly && <header><div className="header-inner"><a className="brand" href="/" aria-label="Fund For Future home"><span className="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" aria-hidden="true"><path d="m3 9 9-5 9 5-9 5-9-5Z"/><path d="M6 11v6c4 3 8 3 12 0v-6M21 9v7"/></svg></span>Fund For Future</a><Link className="profile-link" href="/student-profile"><svg width="14" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M4 22v-3a8 8 0 0 1 16 0v3"/></svg>Student profile</Link></div></header>}
+    <AppHeader signedIn={signedIn} />
     <main className={profileOnly ? "student-profile-page" : undefined}><div className="intro">{profileOnly ? <h1>Enhance your profile</h1> : <><p className="eyebrow">Your next chapter starts here</p><h1>A little about you. A lot of possibility.</h1><p>Build your student profile to discover scholarships that fit your goals.</p></>}</div>
       {profileOnly && !signedIn && !loading && <section className="account-required" aria-labelledby="account-required-title"><div><h3 id="account-required-title">Create an account first</h3><p id="account-required-description">Create an account before editing or saving your student profile.</p></div><Link className="primary account-required-link" href="/#create-account">Create account</Link></section>}<div className={profileOnly ? "profile-only-grid" : "page-grid"}><section className="card profile-card" id="student-information"><h2>Student information</h2><form ref={profileForm} onSubmit={saveProfile}><fieldset className="profile-fields" disabled={busy || loading || (profileOnly && !signedIn)} aria-describedby={profileOnly ? "account-required-description" : undefined}>
         <section className="form-section"><h3>Personal details</h3><p className="hint">Your basic information helps us narrow down relevant opportunities.</p><div className="field-grid">
@@ -114,7 +115,7 @@ export default function ProfileScreen({ profileOnly = false }: { profileOnly?: b
           <div className="account-actions"><button className="primary" type="submit" disabled={busy || loading || signedIn}>{busy ? "Saving…" : signedIn ? "Signed in" : createAccount ? "Create account" : "Sign in"}</button><button className="secondary" type="button" disabled={busy || loading || signedIn} onClick={() => { setCreateAccount(!createAccount); setAccountMessage(""); }}>{createAccount ? "Back to sign in" : "Create account"}</button></div><p className="status" role="status">{accountMessage || (signedIn ? "Signed in as " + studentEmail : "")}</p>
         </form>}</section>
         <section className="discovery-card"><div className="campus-image" role="img" aria-label="Tree-lined university campus with historic brick buildings"/><div className="discovery-content"><h3>More you. Better discovery.</h3><p>We use your education, location and interests to suggest opportunities worth exploring.</p><small>A match is a starting point, not a guarantee. Always check each provider’s eligibility rules before applying.</small></div></section>
-      </aside>}</div><footer><span>Student information is saved to your account. Scholarship discovery is coming soon.</span><span>© 2026 Fund For Future</span></footer>
+      </aside>}</div><footer><span>Student information is saved to your account. Explore sample opportunities in the Scholarship tab.</span><span>© 2026 Fund For Future</span></footer>
     </main>
   </>;
 }

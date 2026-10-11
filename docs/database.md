@@ -58,4 +58,4 @@ npm run build
 
 The integration test invokes the actual route handlers through lightweight Next.js response adapters against the configured database. It creates uniquely named synthetic students and removes them in a finally block. It covers registration, duplicate emails, password hashing, login, invalid GPA, unauthorized access, isolation between students, logout, and expired sessions. It does not replace browser testing or a production build.
 
-This prototype does not yet include email verification, password recovery, or authentication rate limits. Scholarship discovery is still awaiting integration.
+This prototype does not yet include email verification, password recovery, or authentication rate limits. Scholarship discovery loads the PostgreSQL catalog and supports Gemini matching; see [setup](scholarships.md).

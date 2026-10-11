@@ -45,6 +45,6 @@ Imports beginning with @/ resolve to src/.
 
 ## Current functionality
 
-Registration, sign-in, sign-out, and student profile storage use TigerData PostgreSQL. Registration saves accounts and profiles together; profiles load and update through authenticated sessions. Passwords are stored as salted scrypt hashes. Password recovery and scholarship discovery are not implemented yet. See [database setup and testing](docs/database.md).
+Registration, sign-in, sign-out, and student profile storage use TigerData PostgreSQL. Registration saves accounts and profiles together; profiles load and update through authenticated sessions. Passwords are stored as salted scrypt hashes. The Scholarship tab loads the PostgreSQL catalog and offers Gemini profile matching. See [scholarship setup](docs/scholarships.md). Bookmarks, budget, and tracking are stored on this device under your student ID. Password recovery is not implemented yet. See [database setup and testing](docs/database.md).
 
 Database setup files are in database/schema.sql and database/import_scholarships.sql. Data tooling remains in scripts/ with Python dependencies in requirements.txt. See [project plan](docs/plan.md) and [frontend notes](docs/frontend.md).

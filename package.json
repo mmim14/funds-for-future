@@ -8,7 +8,8 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "db:setup": "node scripts/setup-students.mjs",
-    "test:registration": "node scripts/test-student-registration.mjs"
+    "test:registration": "node scripts/test-student-registration.mjs",
+    "test:scholarships": "node scripts/test-scholarships.mjs"
   },
   "dependencies": {
     "next": "^15.5.0",

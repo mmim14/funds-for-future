@@ -13,4 +13,4 @@ Open http://localhost:3000. Use npm run typecheck for TypeScript checks and npm 
 
 Student registration, sign-in, sign-out, and profile persistence are connected to TigerData. Fill out the student information, then create an account using the account panel. Profile edits require a signed-in session. See [database instructions](database.md).
 
-Scholarship discovery and password recovery are not yet implemented. The campus photo loads from Unsplash and requires internet access.
+The Scholarship tab loads the database catalog with search, filters, sorting, bookmarks and Gemini profile matching. College finances tracks catalog awards and your budget. Browser data is scoped to your student ID and stays on this device. See [Gemini setup](scholarships.md). Password recovery is not yet connected. The campus photo loads from Unsplash and requires internet access.
