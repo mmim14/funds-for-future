@@ -11,6 +11,8 @@ __pycache__/
 # Node.js
 node_modules/
 .next/
+.next-dev/
+*.tsbuildinfo
 
 # IDE
 .vscode/
