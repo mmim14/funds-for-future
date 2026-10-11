@@ -23,11 +23,17 @@ export async function matchWithGemini(studentId: string, profile: MatchingProfil
   if (store.requests.size >= 1000) throw new MatchingError("Matching is busy. Please try again shortly.", 429);
   store.requests.set(studentId, now); store.inFlight.add(studentId);
   try {
-    const response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/" + model + ":generateContent", {
-      method: "POST", headers: { "Content-Type": "application/json", "x-goog-api-key": key }, signal: AbortSignal.timeout(45000),
-      body: JSON.stringify({ systemInstruction: { parts: [{ text: matchingInstructions }] }, contents: [{ role: "user", parts: [{ text: prompt }] }], generationConfig: { temperature: 0.2, maxOutputTokens: 12000, responseMimeType: "application/json", responseJsonSchema: matchingSchema } })
-    });
-    if (!response.ok) throw new MatchingError(response.status === 429 ? "Gemini's request limit was reached. Try again later." : "Gemini matching is unavailable. Check the server's API key and model configuration.", 503);
+    let response: Response;
+    for (let attempt = 0; ; attempt++) {
+      response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/" + model + ":generateContent", {
+        method: "POST", headers: { "Content-Type": "application/json", "x-goog-api-key": key }, signal: AbortSignal.timeout(45000),
+        body: JSON.stringify({ systemInstruction: { parts: [{ text: matchingInstructions }] }, contents: [{ role: "user", parts: [{ text: prompt }] }], generationConfig: { temperature: 0.2, maxOutputTokens: 12000, responseMimeType: "application/json", responseJsonSchema: matchingSchema } })
+      });
+      if (![429, 500, 502, 503, 504].includes(response.status) || attempt >= 2) break;
+      await response.body?.cancel();
+      await new Promise(resolve => setTimeout(resolve, 1000 * 2 ** attempt));
+    }
+    if (!response.ok) throw new MatchingError(response.status === 429 ? "Gemini's request limit was reached. Try again later." : response.status >= 500 ? "Gemini is temporarily busy or unavailable. Please try again shortly." : "Gemini matching is unavailable. Check the server's API key and model configuration.", 503);
     const result = await response.json();
     const candidate = result.candidates?.[0];
     if (candidate?.finishReason !== "STOP") throw new MatchingError("Gemini could not finish matching. Please try again.", 502);
@@ -37,6 +43,7 @@ export async function matchWithGemini(studentId: string, profile: MatchingProfil
     store.cache.set(cacheKey, { expires: now + 10 * 60000, matches });
     return matches;
   } catch (error) {
+    store.requests.delete(studentId);
     if (error instanceof MatchingError) throw error;
     throw new MatchingError("Gemini returned an invalid response or timed out. Please try again.", 502);
   } finally { store.inFlight.delete(studentId); }
