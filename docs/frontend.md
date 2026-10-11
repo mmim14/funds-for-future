@@ -1,8 +1,8 @@
 # Fund For Future frontend
 
-Next.js implementation of the reference in `../image.png`.
+Next.js implementation of the reference in `design-reference.png`.
 
-Run from this directory:
+Run from the repository root:
 
 ```powershell
 npm install
