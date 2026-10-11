@@ -46,7 +46,13 @@ Target users: students preparing for college (undergraduate students, transfer s
 ## System Architecture 
 ![alt text](assets/image-1.png)
 
+
 ### UML Class Diagram
+
+### Flowchart
+Student profile → Next.js server → Query TigerData
+                                 → Evaluate eligibility rules
+                                 → Return matches and explanations
 
 
 
