@@ -14,3 +14,7 @@ node_modules/
 
 # IDE
 .vscode/
+
+# Next.js development output and TypeScript cache
+.next-dev/
+*.tsbuildinfo
